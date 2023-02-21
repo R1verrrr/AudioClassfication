@@ -79,7 +79,7 @@ python trainer.py --max_lr 3e-4 --run_name r1 --emb_dim 128  --dataset urban8k -
 Fs=16KHz\
 seq_len = 16384 ~1sec\
 use use_bg in case one want to add background noise given in speechcommands dataset
-python trainer.py --max_lr 3e-4 --run_name r1 --emb_dim 128  --dataset esc50 --seq_len 16384  --mix_ratio 1 --epoch_mix 12 --mix_loss bce --batch_size 128 --n_epochs 1500 --ds_factors 4 4 4 --amp --save_path outputs
+python trainer.py --max_lr 3e-4 --run_name r1 --emb_dim 128  --dataset speechcommands --seq_len 16384  --mix_ratio 1 --epoch_mix 12 --mix_loss bce --batch_size 128 --n_epochs 1500 --ds_factors 4 4 4 --amp --save_path outputs
 
 # inference - 
 python inference.py --f_res outputs/r1
