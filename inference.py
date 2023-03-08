@@ -13,6 +13,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--f_res", default=None, type=Path)
+    parser.add_argument("--add_noise", defual = None)
     args = parser.parse_args()
     return args
 
@@ -221,4 +222,4 @@ def inference_multi_label(net, data_set, args):
 
 
 if __name__ == '__main__':
-    pass
+    run()
