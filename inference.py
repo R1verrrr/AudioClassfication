@@ -155,13 +155,17 @@ def inference_single_label(net, data_set, args):
             x = x.to(device)
             y = y.to(device)
             pred = net(x)
+            print(f'x shape: {x.shape}')
+            print(f'y shape: {y.shape}')
+            print(f"Pred shape: {pred.shape}")
+            print(pred)
             _, y_est = torch.max(pred, 1)
             idx_end = idx_start + y.shape[0]
             preds[idx_start:idx_end, :] = pred
             labels[idx_start:idx_end] = y
             for t, p in zip(y.view(-1), y_est.view(-1)):
                 confusion_matrix[t.long(), p.long()] += 1
-            print("{}/{}".format(i, len(data_loader)))
+            print("{}/{}".format(i+1, len(data_loader)))
         idx_start = idx_end
     acc_av = accuracy(preds.detach(), labels.detach(), [1, ])[0]
 
