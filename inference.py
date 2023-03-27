@@ -150,23 +150,36 @@ def inference_single_label(net, data_set, args):
     # confusion_matrix = torch.zeros(args['n_classes'], args['n_classes'], dtype=torch.int)
     confusion_matrix = torch.zeros(args['n_classes'], args['n_classes'], dtype=torch.int)
     idx_start = 0
+    
     for i, (x, y) in enumerate(data_loader):
+        # i = 0 -> 85 vì chia theo batch, mỗi batch 128 files, tổng có 11005 files nên có 86 batches
         with torch.no_grad():
             x = x.to(device)
             y = y.to(device)
             pred = net(x)
-            print(f'x shape: {x.shape}')
-            print(f'y shape: {y.shape}')
+
             print(f"Pred shape: {pred.shape}")
-            print(pred)
-            _, y_est = torch.max(pred, 1)
+            print(f'Pred matrix:\n {pred}')
+            _, y_est = torch.max(pred, 1) # Lấy maximum value của từng hàng, return array gồm các GTLN của từng row, và 1 array chứa index của các GTLN đó
+            print(f'y_est: {y_est}')
             idx_end = idx_start + y.shape[0]
-            preds[idx_start:idx_end, :] = pred
+
+            preds[idx_start:idx_end, :] = pred 
             labels[idx_start:idx_end] = y
+
+            k = int(labels[1])
+            test = data_set.labels[k]
+            print(test)
+            
+            
+                
+            print(f'labels:\n {labels}')
             for t, p in zip(y.view(-1), y_est.view(-1)):
                 confusion_matrix[t.long(), p.long()] += 1
-            print("{}/{}".format(i+1, len(data_loader)))
+            print("Batch: {}/{}".format(i+1, len(data_loader)))
         idx_start = idx_end
+    
+    
     acc_av = accuracy(preds.detach(), labels.detach(), [1, ])[0]
 
     res = {
